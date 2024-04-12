@@ -36,7 +36,9 @@
 .head{
     background-color: red;
 }
-
-.food{
+.snakebody{
     background-color: blue;
+}
+.food{
+    background-color: yellow;
 }

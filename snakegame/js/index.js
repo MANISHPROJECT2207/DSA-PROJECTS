@@ -1,23 +1,24 @@
-let direction = { x: 0, y: 0 }  // in which direction it is moving
+let inputdir = { x: 0, y: 0 }  // in which direction it is moving
 const foodSound = new Audio('/snakegame/music_food.mp3')
 const gameOverSound = new Audio('/snakegame/music_gameover.mp3')
 const moveSound = new Audio('/snakegame/music_move.mp3')
-const backgroundMusic = new Audio('/snakegame/music.mp3')   
-let speed = 2;
+const backgroundMusic = new Audio('/snakegame/music.mp3')
+let speed = 4;
 let lastPaintTime = 0;
-
+let score = 0;
 let snakeArray = [
-    {x:13,y:15}
+    { x: 13, y: 15 }
 ]
+let food = { x: 6, y: 7 }
 
 let board = document.querySelector('#board')
 // game functions
 
 // functions ----------------------------
 
-function main(ctime){
+function main(ctime) {
     window.requestAnimationFrame(main); //---- to design the gameloop
-    if((ctime - lastPaintTime)/1000 < 1/speed){
+    if ((ctime - lastPaintTime) / 1000 < 1 / speed) {
         return;
     }
     lastPaintTime = ctime;
@@ -25,21 +26,65 @@ function main(ctime){
 
 }
 
-
-function gameEngine(){
+function isCollide(arr){
+    return false;
+}
+function gameEngine() {
     // part1 = updating the snake array and food
 
+    if(isCollide(snakeArray)){
+        gameOverSound.play();
+        backgroundMusic.pause();
+        inputdir = {x:0,y:0};
+        alert("Game Over. Press any key to Restart!!")
+        snakeArray = [
+            {x:13,y:15}
+        ]
+        score = 0;
+        backgroundMusic.play();
+    }
+
+    // if snake eaten the food 
+    if(snakeArray[0].y === food.y && snakeArray[0].x === food.x){
+        foodSound.play();
+        snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
+        food = {x:Math.round(2+(14)*Math.random()),y:Math.round(2+(14)*Math.random())}; // --to generate random food
+        score += 1;
+    }
+
+    // moving the snake
+    for (let i = snakeArray.length-2; i >= 0; i--) {
+        snakeArray[i+1] = {...snakeArray[i]};
+    }
+    snakeArray[0].x += inputdir.x;
+    snakeArray[0].y += inputdir.y;
+
     //part2 =  display the snake array and Food
-    console.log(board);
+    
     board.innerHTML = ""; // to empty previous frame
     // to get all point and make it into frame
-    snakeArray.forEach((points,index)=>{
+
+
+    // DIsplay THe snake
+    snakeArray.forEach((points, index) => {
         snakeElementDiv = document.createElement('div');
         snakeElementDiv.style.gridRowStart = points.y;
         snakeElementDiv.style.gridColumnStart = points.x;
-        snakeElementDiv.classList.add('food');
+        if (index === 0) {
+            snakeElementDiv.classList.add('head');
+        }
+        else {
+            snakeElementDiv.classList.add('snakebody');
+        }
         board.appendChild(snakeElementDiv);
     })
+
+    // Display the food
+    foodElementDiv = document.createElement('div');
+    foodElementDiv.style.gridRowStart = food.y;
+    foodElementDiv.style.gridColumnStart = food.x;
+    foodElementDiv.classList.add('food');
+    board.appendChild(foodElementDiv);
 
 }
 
@@ -49,6 +94,40 @@ function gameEngine(){
 // gameLoop used as a painting the screen so that it shows how to snake is moving
 
 // so We are using requestAnimation that is used in games to show animation. It is exicuted before every paint.
-//it takes argument as input and which is known as a timestamp which indicates that when request of repaint is made.
+// it takes argument as input and which is known as a timestamp which indicates that when request of repaint is made.
 window.requestAnimationFrame(main); // to eliminate the flickration in setinterval , high quality animation
+
+window.addEventListener('keydown', (e) => {
+    inputdir = { x: 0, y: 1 }
+    moveSound.play();
+    console.log(e);
+    switch (e.key) {
+        case "ArrowUp":
+            console.log("ArrowUp");
+            inputdir.x = 0;
+            inputdir.y = -1;
+            break;
+
+        case "ArrowDown":
+            console.log("ArrowDown");
+            inputdir.x = 0;
+            inputdir.y = 1;
+            break;
+
+        case "ArrowLeft":
+            console.log("ArrowLeft");
+            inputdir.x = -1;
+            inputdir.y = 0;
+            break;
+
+        case "ArrowRight":
+            console.log("ArrowRight");
+            inputdir.x = 1;
+            inputdir.y = 0;
+            break;
+
+        default:
+            break;
+    }
+})
 
