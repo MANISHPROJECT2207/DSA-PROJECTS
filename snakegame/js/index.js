@@ -3,7 +3,7 @@ const foodSound = new Audio('/snakegame/music_food.mp3')
 const gameOverSound = new Audio('/snakegame/music_gameover.mp3')
 const moveSound = new Audio('/snakegame/music_move.mp3')
 const backgroundMusic = new Audio('/snakegame/music.mp3')
-let speed = 4;
+let speed = 2;
 let lastPaintTime = 0;
 let score = 0;
 let snakeArray = [
@@ -17,6 +17,22 @@ let highscoreId = document.querySelector('#highscore')
 // game functions
 
 // functions ----------------------------
+
+let highscore = localStorage.getItem('highscore');
+        if(highscore === null){
+            let highscoreval = 0;
+            localStorage.setItem("highscore",JSON.stringify(highscoreval))
+        }
+        else{
+            let highscoreval = JSON.parse(localStorage.getItem("highscore"));
+            console.log(highscoreval);
+            highscoreval = Math.max(highscoreval,score)
+            highscoreId.innerHTML = "HighScore:" + highscoreval
+            localStorage.setItem("highscore",JSON.stringify(highscoreval))
+            
+        }
+
+
 
 function main(ctime) {
     window.requestAnimationFrame(main); //---- to design the gameloop
