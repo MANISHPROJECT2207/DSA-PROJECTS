@@ -12,6 +12,8 @@ let snakeArray = [
 let food = { x: 6, y: 7 }
 
 let board = document.querySelector('#board')
+let scoreId = document.querySelector("#score")
+let highscoreId = document.querySelector('#highscore')
 // game functions
 
 // functions ----------------------------
@@ -27,7 +29,17 @@ function main(ctime) {
 }
 
 function isCollide(arr){
+    // if you collide with yourself
+    for(let i=1;i<arr.length;i++){
+        if(arr[i].x === arr[0].x && arr[i].y === arr[0].y){
+            return true;
+        }
+    }
+    if(arr[0].x >= 18 || arr[0].x <=0 || arr[0].y >= 18 || arr[0].y <= 0){
+        return true;
+    }
     return false;
+
 }
 function gameEngine() {
     // part1 = updating the snake array and food
@@ -41,6 +53,7 @@ function gameEngine() {
             {x:13,y:15}
         ]
         score = 0;
+        scoreId.innerHTML = "Score:"+0
         backgroundMusic.play();
     }
 
@@ -50,6 +63,21 @@ function gameEngine() {
         snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
         food = {x:Math.round(2+(14)*Math.random()),y:Math.round(2+(14)*Math.random())}; // --to generate random food
         score += 1;
+        scoreId.innerHTML = "Score:" + score
+        
+        let highscore = localStorage.getItem('highscore');
+        if(highscore === null){
+            let highscoreval = 0;
+            localStorage.setItem("highscore",JSON.stringify(highscoreval))
+        }
+        else{
+            let highscoreval = JSON.parse(localStorage.getItem("highscore"));
+            console.log(highscoreval);
+            highscoreval = Math.max(highscoreval,score)
+            highscoreId.innerHTML = "HighScore:" + highscoreval
+            localStorage.setItem("highscore",JSON.stringify(highscoreval))
+            
+        }
     }
 
     // moving the snake

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&family=Jersey+10&display=swap');
+
 *{
     padding: 0;
     margin: 0;
@@ -14,10 +16,29 @@
     align-items: center;
 }
 
+#score{
+    position: absolute;
+    top:9px;
+    right: 10px;
+    font-size: 39px;
+    font-weight: bold;
+    font-family: "Caveat", cursive;
+}
+
+#highscore{
+    position: absolute;
+    top:50px;
+    right: 10px;
+    font-size: 39px;
+    font-weight: bold;
+    font-family: "Caveat", cursive;
+}
+
 #board{
 
-    background: url(../boardbg.jpg);
-    filter: brightness(2);
+    /* background: url(../boardbg.jpg); */
+    background: linear-gradient(rgb(170,236,170),rgb(236,236,167));
+    /* filter: brightness(2); */
     background-size: 40vw 100vh;
     width: 90vmin;
     height: 92vmin;
@@ -34,11 +55,18 @@
 
 
 .head{
-    background-color: red;
+    background:linear-gradient(rgb(175, 23, 23),rgb(219, 219, 76));
+    border: 2px solid purple;
+    transform: scale(1.02);
+    border-radius: 9px;
 }
 .snakebody{
     background-color: blue;
+    border: .25vmin solid white;
+    border-radius: 12px;
 }
 .food{
-    background-color: yellow;
+    background: linear-gradient(red,purple);
+    border: .25vmin solid black;
+    border-radius: 8px;
 }
