@@ -17,7 +17,7 @@ let highscoreId = document.querySelector('#highscore')
 // game functions
 
 // functions ----------------------------
-
+// getting highscore from localStorage---------------
 let highscore = localStorage.getItem('highscore');
         if(highscore === null){
             let highscoreval = 0;
