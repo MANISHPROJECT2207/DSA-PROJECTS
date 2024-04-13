@@ -3,7 +3,7 @@ const foodSound = new Audio('/snakegame/music_food.mp3')
 const gameOverSound = new Audio('/snakegame/music_gameover.mp3')
 const moveSound = new Audio('/snakegame/music_move.mp3')
 const backgroundMusic = new Audio('/snakegame/music.mp3')
-let speed = 2;
+let speed = 3;
 let lastPaintTime = 0;
 let score = 0;
 let snakeArray = [
@@ -94,6 +94,7 @@ function gameEngine() {
             localStorage.setItem("highscore",JSON.stringify(highscoreval))
             
         }
+        speed += 0.25; // to increase speed
     }
 
     // moving the snake
@@ -169,6 +170,11 @@ window.addEventListener('keydown', (e) => {
             inputdir.x = 1;
             inputdir.y = 0;
             break;
+         
+        // case "q":
+        //     inputdir.x = -1;
+        //     inputdir.y = -1;
+        //     break;    
 
         default:
             break;
