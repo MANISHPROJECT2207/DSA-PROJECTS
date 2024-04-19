@@ -3,7 +3,7 @@ const foodSound = new Audio('/snakegame/music_food.mp3')
 const gameOverSound = new Audio('/snakegame/music_gameover.mp3')
 const moveSound = new Audio('/snakegame/music_move.mp3')
 const backgroundMusic = new Audio('/snakegame/music.mp3')
-let speed = 2;
+let speed = 3;
 let lastPaintTime = 0;
 let score = 0;
 let snakeArray = [
@@ -15,6 +15,8 @@ let reversefood = {x:3,y:9}
 let board = document.querySelector('#board')
 let scoreId = document.querySelector("#score")
 let highscoreId = document.querySelector('#highscore')
+
+let snakeLastpointer = null;  // to use reverse functionality
 // game functions
 
 // functions ----------------------------
@@ -70,6 +72,7 @@ async function gameEngine() {
             {x:13,y:15}
         ]
         score = 0;
+        speed = 3;
         scoreId.innerHTML = "Score:"+0
         backgroundMusic.play();
     }
@@ -97,36 +100,38 @@ async function gameEngine() {
         }
         speed += 0.25; // to increase speed
     }
+
+
+
+
+
     // reverse snake addon
+
+
+
     if(snakeArray[0].y === reversefood.y && snakeArray[0].x === reversefood.x){
         foodSound.play();
-        snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
-        let i = 0;
-        let j = snakeArray.length-1;
-        // while(i<j){
-            //     let temp = snakeArray[i];
-            //     snakeArray[i] = {...snakeArray[j]};
-            //     snakeArray[j] = {...temp};
-            //     i++;
-            //     j--;
-            // }
-        snakeArray.reverse()
-        if(inputdir.x === 0 && inputdir.y === 1){
+        
+        snakeArray.reverse();
+        if(snakeLastpointer === "U"){
             inputdir.x = 0;
             inputdir.y = -1;
         }
-        else if(inputdir.x === 0 && inputdir.y === -1){
+        else if(snakeLastpointer === "D"){
             inputdir.x = 0;
             inputdir.y = 1;
         }
-        else if(inputdir.x === 1 && inputdir.y === 0){
+        else if(snakeLastpointer === "L"){
             inputdir.x = -1;
             inputdir.y = 0;
         }
-        else if(inputdir.x === -1 && inputdir.y === 0){
+        else if(snakeLastpointer === "R"){
             inputdir.x = 1;
             inputdir.y = 0;
         }
+
+
+        // snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
         
         reversefood = {x:Math.round(2+(14)*Math.random()),y:Math.round(2+(14)*Math.random())}; // --to generate random food
         score += 1;
@@ -145,8 +150,32 @@ async function gameEngine() {
             localStorage.setItem("highscore",JSON.stringify(highscoreval))
             
         }
-        speed += 0.25; // to increase speed
+        speed -= 0.25; // to increase speed
     }
+
+
+
+        // pointer of last point to reverse
+        if(snakeArray.length >= 2){
+            let lastvaluex = snakeArray[snakeArray.length-1].x;
+            let lastvaluey = snakeArray[snakeArray.length-1].y;
+            let lastSecondValueX = snakeArray[snakeArray.length-2].x;
+            let lastSecondValueY = snakeArray[snakeArray.length-2].y;
+            if(lastvaluex === lastSecondValueX && lastvaluey -1  === lastSecondValueY){
+                snakeLastpointer = "D"
+            }
+            else if(lastvaluex === lastSecondValueX && lastvaluey === lastSecondValueY - 1){
+                snakeLastpointer = "U"
+            }
+            else if(lastvaluex - 1 === lastSecondValueX && lastvaluey === lastSecondValueY){
+                snakeLastpointer = "R"
+            }
+            else if(lastvaluex === lastSecondValueX -1 && lastvaluey === lastSecondValueY){
+                snakeLastpointer = "L"
+            }
+        }
+    
+
 
     // moving the snake
     for (let i = snakeArray.length-2; i >= 0; i--) {
@@ -154,6 +183,9 @@ async function gameEngine() {
     }
     snakeArray[0].x += inputdir.x;
     snakeArray[0].y += inputdir.y;
+
+
+    
 
     //part2 =  display the snake array and Food
     
