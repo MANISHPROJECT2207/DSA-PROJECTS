@@ -70,3 +70,11 @@
     border: .25vmin solid black;
     border-radius: 8px;
 }
+/* addon */
+.reversefood{
+    
+        background: linear-gradient(black,blue);
+        border: .25vmin solid black;
+        border-radius: 8px;
+   
+}

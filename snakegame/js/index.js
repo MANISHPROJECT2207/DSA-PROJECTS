@@ -3,13 +3,14 @@ const foodSound = new Audio('/snakegame/music_food.mp3')
 const gameOverSound = new Audio('/snakegame/music_gameover.mp3')
 const moveSound = new Audio('/snakegame/music_move.mp3')
 const backgroundMusic = new Audio('/snakegame/music.mp3')
-let speed = 3;
+let speed = 2;
 let lastPaintTime = 0;
 let score = 0;
 let snakeArray = [
     { x: 13, y: 15 }
 ]
 let food = { x: 6, y: 7 }
+let reversefood = {x:3,y:9}
 
 let board = document.querySelector('#board')
 let scoreId = document.querySelector("#score")
@@ -57,7 +58,7 @@ function isCollide(arr){
     return false;
 
 }
-function gameEngine() {
+async function gameEngine() {
     // part1 = updating the snake array and food
 
     if(isCollide(snakeArray)){
@@ -78,6 +79,56 @@ function gameEngine() {
         foodSound.play();
         snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
         food = {x:Math.round(2+(14)*Math.random()),y:Math.round(2+(14)*Math.random())}; // --to generate random food
+        score += 1;
+        scoreId.innerHTML = "Score:" + score
+        
+        let highscore = localStorage.getItem('highscore');
+        if(highscore === null){
+            let highscoreval = 0;
+            localStorage.setItem("highscore",JSON.stringify(highscoreval))
+        }
+        else{
+            let highscoreval = JSON.parse(localStorage.getItem("highscore"));
+            console.log(highscoreval);
+            highscoreval = Math.max(highscoreval,score)
+            highscoreId.innerHTML = "HighScore:" + highscoreval
+            localStorage.setItem("highscore",JSON.stringify(highscoreval))
+            
+        }
+        speed += 0.25; // to increase speed
+    }
+    // reverse snake addon
+    if(snakeArray[0].y === reversefood.y && snakeArray[0].x === reversefood.x){
+        foodSound.play();
+        snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
+        let i = 0;
+        let j = snakeArray.length-1;
+        // while(i<j){
+            //     let temp = snakeArray[i];
+            //     snakeArray[i] = {...snakeArray[j]};
+            //     snakeArray[j] = {...temp};
+            //     i++;
+            //     j--;
+            // }
+        snakeArray.reverse()
+        if(inputdir.x === 0 && inputdir.y === 1){
+            inputdir.x = 0;
+            inputdir.y = -1;
+        }
+        else if(inputdir.x === 0 && inputdir.y === -1){
+            inputdir.x = 0;
+            inputdir.y = 1;
+        }
+        else if(inputdir.x === 1 && inputdir.y === 0){
+            inputdir.x = -1;
+            inputdir.y = 0;
+        }
+        else if(inputdir.x === -1 && inputdir.y === 0){
+            inputdir.x = 1;
+            inputdir.y = 0;
+        }
+        
+        reversefood = {x:Math.round(2+(14)*Math.random()),y:Math.round(2+(14)*Math.random())}; // --to generate random food
         score += 1;
         scoreId.innerHTML = "Score:" + score
         
@@ -130,6 +181,12 @@ function gameEngine() {
     foodElementDiv.style.gridColumnStart = food.x;
     foodElementDiv.classList.add('food');
     board.appendChild(foodElementDiv);
+    // add on of reverse food Display
+    reversefoodElementDiv = document.createElement('div');
+    reversefoodElementDiv.style.gridRowStart = reversefood.y;
+    reversefoodElementDiv.style.gridColumnStart = reversefood.x;
+    reversefoodElementDiv.classList.add('reversefood');
+    board.appendChild(reversefoodElementDiv);
 
 }
 
