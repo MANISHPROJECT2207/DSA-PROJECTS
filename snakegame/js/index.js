@@ -15,6 +15,12 @@ let reversefood = {x:3,y:9}
 let board = document.querySelector('#board')
 let scoreId = document.querySelector("#score")
 let highscoreId = document.querySelector('#highscore')
+let soundon  = true;
+
+
+if(soundon){
+    backgroundMusic.play();
+}
 
 let snakeLastpointer = null;  // to use reverse functionality
 // game functions
@@ -62,9 +68,9 @@ function isCollide(arr){
 }
 async function gameEngine() {
     // part1 = updating the snake array and food
-
+    
     if(isCollide(snakeArray)){
-        gameOverSound.play();
+        if(soundon) gameOverSound.play()
         backgroundMusic.pause();
         inputdir = {x:0,y:0};
         alert("Game Over. Press any key to Restart!!")
@@ -73,13 +79,13 @@ async function gameEngine() {
         ]
         score = 0;
         speed = 3;
-        scoreId.innerHTML = "Score:"+0
-        backgroundMusic.play();
+        scoreId.innerHTML = "Score:"+ 0
+        if(soundon) backgroundMusic.play();
     }
 
     // if snake eaten the food 
     if(snakeArray[0].y === food.y && snakeArray[0].x === food.x){
-        foodSound.play();
+        if(soundon) foodSound.play();
         snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
         food = {x:Math.round(2+(14)*Math.random()),y:Math.round(2+(14)*Math.random())}; // --to generate random food
         score += 1;
@@ -110,7 +116,7 @@ async function gameEngine() {
 
 
     if(snakeArray[0].y === reversefood.y && snakeArray[0].x === reversefood.x){
-        foodSound.play();
+        if(soundon)   foodSound.play();
         
         snakeArray.reverse();
         if(snakeLastpointer === "U"){
@@ -233,7 +239,7 @@ window.requestAnimationFrame(main); // to eliminate the flickration in setinterv
 
 window.addEventListener('keydown', (e) => {
     inputdir = { x: 0, y: 1 }
-    moveSound.play();
+    if(soundon) moveSound.play();
     console.log(e);
     switch (e.key) {
         case "ArrowUp":
@@ -269,4 +275,21 @@ window.addEventListener('keydown', (e) => {
             break;
     }
 })
+
+
+
+
+//add on - soundOn
+let soundOn = document.querySelector('#soundOn');
+soundOn.addEventListener('click', () => {
+    if(soundon){
+        soundon = false;
+        backgroundMusic.pause();
+    }
+    else{
+        backgroundMusic.play();
+        soundon = true;
+    }
+});
+
 
