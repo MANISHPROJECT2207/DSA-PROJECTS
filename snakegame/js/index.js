@@ -10,12 +10,13 @@ let snakeArray = [
     { x: 13, y: 15 }
 ]
 let food = { x: 6, y: 7 }
-let reversefood = {x:3,y:9}
+let reversefood = { x: 3, y: 9 }
 
 let board = document.querySelector('#board')
 let scoreId = document.querySelector("#score")
 let highscoreId = document.querySelector('#highscore')
-let soundon  = true;
+let changeImage = document.querySelector('#changeImage')
+let soundon = true;
 let pause = false;
 
 
@@ -26,23 +27,25 @@ let snakeLastpointer = null;  // to use reverse functionality
 // functions ----------------------------
 // getting highscore from localStorage---------------
 let highscore = localStorage.getItem('highscore');
-        if(highscore === null){
-            let highscoreval = 0;
-            localStorage.setItem("highscore",JSON.stringify(highscoreval))
-        }
-        else{
-            let highscoreval = JSON.parse(localStorage.getItem("highscore"));
-            // console.log(highscoreval);
-            highscoreval = Math.max(highscoreval,score)
-            highscoreId.innerHTML = "HighScore:" + highscoreval
-            localStorage.setItem("highscore",JSON.stringify(highscoreval))
-            
-        }
+if (highscore === null) {
+    let highscoreval = 0;
+    localStorage.setItem("highscore", JSON.stringify(highscoreval))
+}
+else {
+    let highscoreval = JSON.parse(localStorage.getItem("highscore"));
+    // console.log(highscoreval);
+    highscoreval = Math.max(highscoreval, score)
+    highscoreId.innerHTML = "HighScore:" + highscoreval
+    localStorage.setItem("highscore", JSON.stringify(highscoreval))
+
+}
 
 
 
 function main(ctime) {
-    // backgroundMusic.play();
+    if (soundon) {
+        backgroundMusic.play();
+    }
     window.requestAnimationFrame(main); //---- to design the gameloop
     if ((ctime - lastPaintTime) / 1000 < 1 / speed) {
         return;
@@ -52,14 +55,14 @@ function main(ctime) {
 
 }
 
-function isCollide(arr){
+function isCollide(arr) {
     // if you collide with yourself
-    for(let i=1;i<arr.length;i++){
-        if(arr[i].x === arr[0].x && arr[i].y === arr[0].y){
+    for (let i = 1; i < arr.length; i++) {
+        if (arr[i].x === arr[0].x && arr[i].y === arr[0].y) {
             return true;
         }
     }
-    if(arr[0].x >= 18 || arr[0].x <=0 || arr[0].y >= 18 || arr[0].y <= 0){
+    if (arr[0].x >= 18 || arr[0].x <= 0 || arr[0].y >= 18 || arr[0].y <= 0) {
         return true;
     }
     return false;
@@ -67,41 +70,41 @@ function isCollide(arr){
 }
 async function gameEngine() {
     // part1 = updating the snake array and food
-    
-    if(isCollide(snakeArray)){
-        if(soundon) gameOverSound.play()
+
+    if (isCollide(snakeArray)) {
+        if (soundon) gameOverSound.play()
         backgroundMusic.pause();
-        inputdir = {x:0,y:0};
+        inputdir = { x: 0, y: 0 };
         alert("Game Over. Press any key to Restart!!")
         snakeArray = [
-            {x:13,y:15}
+            { x: 13, y: 15 }
         ]
         score = 0;
         speed = 3;
-        scoreId.innerHTML = "Score:"+ 0
-        if(soundon) backgroundMusic.play();
+        scoreId.innerHTML = "Score:" + 0
+        if (soundon) backgroundMusic.play();
     }
 
     // if snake eaten the food 
-    if(snakeArray[0].y === food.y && snakeArray[0].x === food.x){
-        if(soundon) foodSound.play();
-        snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
-        food = {x:Math.round(2+(14)*Math.random()),y:Math.round(2+(14)*Math.random())}; // --to generate random food
+    if (snakeArray[0].y === food.y && snakeArray[0].x === food.x) {
+        if (soundon) foodSound.play();
+        snakeArray.unshift({ x: snakeArray[0].x + inputdir.x, y: snakeArray[0].y + inputdir.y });
+        food = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (14) * Math.random()) }; // --to generate random food
         score += 1;
         scoreId.innerHTML = "Score:" + score
-        
+
         let highscore = localStorage.getItem('highscore');
-        if(highscore === null){
+        if (highscore === null) {
             let highscoreval = 0;
-            localStorage.setItem("highscore",JSON.stringify(highscoreval))
+            localStorage.setItem("highscore", JSON.stringify(highscoreval))
         }
-        else{
+        else {
             let highscoreval = JSON.parse(localStorage.getItem("highscore"));
             console.log(highscoreval);
-            highscoreval = Math.max(highscoreval,score)
+            highscoreval = Math.max(highscoreval, score)
             highscoreId.innerHTML = "HighScore:" + highscoreval
-            localStorage.setItem("highscore",JSON.stringify(highscoreval))
-            
+            localStorage.setItem("highscore", JSON.stringify(highscoreval))
+
         }
         speed += 0.25; // to increase speed
     }
@@ -114,89 +117,89 @@ async function gameEngine() {
 
 
 
-    if(snakeArray[0].y === reversefood.y && snakeArray[0].x === reversefood.x){
-        if(soundon)   foodSound.play();
-        
+    if (snakeArray[0].y === reversefood.y && snakeArray[0].x === reversefood.x) {
+        if (soundon) foodSound.play();
+
         snakeArray.reverse();
-        if(snakeLastpointer === "U"){
+        if (snakeLastpointer === "U") {
             inputdir.x = 0;
             inputdir.y = -1;
         }
-        else if(snakeLastpointer === "D"){
+        else if (snakeLastpointer === "D") {
             inputdir.x = 0;
             inputdir.y = 1;
         }
-        else if(snakeLastpointer === "L"){
+        else if (snakeLastpointer === "L") {
             inputdir.x = -1;
             inputdir.y = 0;
         }
-        else if(snakeLastpointer === "R"){
+        else if (snakeLastpointer === "R") {
             inputdir.x = 1;
             inputdir.y = 0;
         }
 
 
         // snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
-        
-        reversefood = {x:Math.round(2+(14)*Math.random()),y:Math.round(2+(14)*Math.random())}; // --to generate random food
+
+        reversefood = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (14) * Math.random()) }; // --to generate random food
         score += 1;
         scoreId.innerHTML = "Score:" + score
-        
+
         let highscore = localStorage.getItem('highscore');
-        if(highscore === null){
+        if (highscore === null) {
             let highscoreval = 0;
-            localStorage.setItem("highscore",JSON.stringify(highscoreval))
+            localStorage.setItem("highscore", JSON.stringify(highscoreval))
         }
-        else{
+        else {
             let highscoreval = JSON.parse(localStorage.getItem("highscore"));
             console.log(highscoreval);
-            highscoreval = Math.max(highscoreval,score)
+            highscoreval = Math.max(highscoreval, score)
             highscoreId.innerHTML = "HighScore:" + highscoreval
-            localStorage.setItem("highscore",JSON.stringify(highscoreval))
-            
+            localStorage.setItem("highscore", JSON.stringify(highscoreval))
+
         }
         speed -= 0.25; // to increase speed
     }
 
 
 
-        // pointer of last point to reverse
-        if(snakeArray.length >= 2){
-            let lastvaluex = snakeArray[snakeArray.length-1].x;
-            let lastvaluey = snakeArray[snakeArray.length-1].y;
-            let lastSecondValueX = snakeArray[snakeArray.length-2].x;
-            let lastSecondValueY = snakeArray[snakeArray.length-2].y;
-            if(lastvaluex === lastSecondValueX && lastvaluey -1  === lastSecondValueY){
-                snakeLastpointer = "D"
-            }
-            else if(lastvaluex === lastSecondValueX && lastvaluey === lastSecondValueY - 1){
-                snakeLastpointer = "U"
-            }
-            else if(lastvaluex - 1 === lastSecondValueX && lastvaluey === lastSecondValueY){
-                snakeLastpointer = "R"
-            }
-            else if(lastvaluex === lastSecondValueX -1 && lastvaluey === lastSecondValueY){
-                snakeLastpointer = "L"
-            }
+    // pointer of last point to reverse
+    if (snakeArray.length >= 2) {
+        let lastvaluex = snakeArray[snakeArray.length - 1].x;
+        let lastvaluey = snakeArray[snakeArray.length - 1].y;
+        let lastSecondValueX = snakeArray[snakeArray.length - 2].x;
+        let lastSecondValueY = snakeArray[snakeArray.length - 2].y;
+        if (lastvaluex === lastSecondValueX && lastvaluey - 1 === lastSecondValueY) {
+            snakeLastpointer = "D"
         }
-    
+        else if (lastvaluex === lastSecondValueX && lastvaluey === lastSecondValueY - 1) {
+            snakeLastpointer = "U"
+        }
+        else if (lastvaluex - 1 === lastSecondValueX && lastvaluey === lastSecondValueY) {
+            snakeLastpointer = "R"
+        }
+        else if (lastvaluex === lastSecondValueX - 1 && lastvaluey === lastSecondValueY) {
+            snakeLastpointer = "L"
+        }
+    }
+
 
 
     // moving the snake
-    if(pause === false){
-        for (let i = snakeArray.length-2; i >= 0; i--) {
-            snakeArray[i+1] = {...snakeArray[i]};
+    if (pause === false) {
+        for (let i = snakeArray.length - 2; i >= 0; i--) {
+            snakeArray[i + 1] = { ...snakeArray[i] };
         }
         snakeArray[0].x += inputdir.x;
         snakeArray[0].y += inputdir.y;
     }
-   
 
 
-    
+
+
 
     //part2 =  display the snake array and Food
-    
+
     board.innerHTML = ""; // to empty previous frame
     // to get all point and make it into frame
 
@@ -240,13 +243,13 @@ async function gameEngine() {
 window.requestAnimationFrame(main); // to eliminate the flickration in setinterval , high quality animation
 
 window.addEventListener('keydown', (e) => {
-    
-    
-    if(soundon) moveSound.play();
-    
+
+
+    if (soundon) moveSound.play();
+
     switch (e.key) {
         case "ArrowUp":
-            if(pause === true){
+            if (pause === true) {
                 pause = false;
             }
             console.log("ArrowUp");
@@ -255,7 +258,7 @@ window.addEventListener('keydown', (e) => {
             break;
 
         case "ArrowDown":
-            if(pause === true){
+            if (pause === true) {
                 pause = false;
             }
             console.log("ArrowDown");
@@ -264,7 +267,7 @@ window.addEventListener('keydown', (e) => {
             break;
 
         case "ArrowLeft":
-            if(pause === true){
+            if (pause === true) {
                 pause = false;
             }
             console.log("ArrowLeft");
@@ -273,7 +276,7 @@ window.addEventListener('keydown', (e) => {
             break;
 
         case "ArrowRight":
-            if(pause === true){
+            if (pause === true) {
                 pause = false;
             }
             console.log("ArrowRight");
@@ -283,11 +286,11 @@ window.addEventListener('keydown', (e) => {
 
 
         case " ":
-            if(pause === false){
+            if (pause === false) {
                 pause = true;
                 backgroundMusic.pause();
             }
-            else{
+            else {
                 pause = false;
                 backgroundMusic.play();
                 inputdir.x = inputdir.x;
@@ -310,14 +313,19 @@ window.addEventListener('keydown', (e) => {
 //add on - soundOn
 let soundOn = document.querySelector('#soundOn');
 soundOn.addEventListener('click', () => {
-    if(soundon){
+    if (soundon) {
         soundon = false;
+        
+        changeImage.src = "/volume-mute.png";
         backgroundMusic.pause();
     }
-    else{
+    else {
         backgroundMusic.play();
+        changeImage.src = "/volume.png";
         soundon = true;
     }
 });
+
+
 
 
