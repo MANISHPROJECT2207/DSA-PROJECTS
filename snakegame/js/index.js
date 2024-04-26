@@ -1,8 +1,8 @@
 let inputdir = { x: 0, y: 0 }  // in which direction it is moving
-const foodSound = new Audio('/snakegame/music_food.mp3')
-const gameOverSound = new Audio('/snakegame/music_gameover.mp3')
-const moveSound = new Audio('/snakegame/music_move.mp3')
-const backgroundMusic = new Audio('/snakegame/music.mp3')
+const foodSound = new Audio('/music_food.mp3')
+const gameOverSound = new Audio('/music_gameover.mp3')
+const moveSound = new Audio('/music_move.mp3')
+const backgroundMusic = new Audio('/music.mp3')
 let speed = 3;
 let lastPaintTime = 0;
 let score = 0;
@@ -16,11 +16,9 @@ let board = document.querySelector('#board')
 let scoreId = document.querySelector("#score")
 let highscoreId = document.querySelector('#highscore')
 let soundon  = true;
+let pause = false;
 
 
-if(soundon){
-    backgroundMusic.play();
-}
 
 let snakeLastpointer = null;  // to use reverse functionality
 // game functions
@@ -34,7 +32,7 @@ let highscore = localStorage.getItem('highscore');
         }
         else{
             let highscoreval = JSON.parse(localStorage.getItem("highscore"));
-            console.log(highscoreval);
+            // console.log(highscoreval);
             highscoreval = Math.max(highscoreval,score)
             highscoreId.innerHTML = "HighScore:" + highscoreval
             localStorage.setItem("highscore",JSON.stringify(highscoreval))
@@ -44,6 +42,7 @@ let highscore = localStorage.getItem('highscore');
 
 
 function main(ctime) {
+    // backgroundMusic.play();
     window.requestAnimationFrame(main); //---- to design the gameloop
     if ((ctime - lastPaintTime) / 1000 < 1 / speed) {
         return;
@@ -184,11 +183,14 @@ async function gameEngine() {
 
 
     // moving the snake
-    for (let i = snakeArray.length-2; i >= 0; i--) {
-        snakeArray[i+1] = {...snakeArray[i]};
+    if(pause === false){
+        for (let i = snakeArray.length-2; i >= 0; i--) {
+            snakeArray[i+1] = {...snakeArray[i]};
+        }
+        snakeArray[0].x += inputdir.x;
+        snakeArray[0].y += inputdir.y;
     }
-    snakeArray[0].x += inputdir.x;
-    snakeArray[0].y += inputdir.y;
+   
 
 
     
@@ -238,34 +240,60 @@ async function gameEngine() {
 window.requestAnimationFrame(main); // to eliminate the flickration in setinterval , high quality animation
 
 window.addEventListener('keydown', (e) => {
-    inputdir = { x: 0, y: 1 }
+    
+    
     if(soundon) moveSound.play();
-    console.log(e);
+    
     switch (e.key) {
         case "ArrowUp":
+            if(pause === true){
+                pause = false;
+            }
             console.log("ArrowUp");
             inputdir.x = 0;
             inputdir.y = -1;
             break;
 
         case "ArrowDown":
+            if(pause === true){
+                pause = false;
+            }
             console.log("ArrowDown");
             inputdir.x = 0;
             inputdir.y = 1;
             break;
 
         case "ArrowLeft":
+            if(pause === true){
+                pause = false;
+            }
             console.log("ArrowLeft");
             inputdir.x = -1;
             inputdir.y = 0;
             break;
 
         case "ArrowRight":
+            if(pause === true){
+                pause = false;
+            }
             console.log("ArrowRight");
             inputdir.x = 1;
             inputdir.y = 0;
             break;
-         
+
+
+        case " ":
+            if(pause === false){
+                pause = true;
+                backgroundMusic.pause();
+            }
+            else{
+                pause = false;
+                backgroundMusic.play();
+                inputdir.x = inputdir.x;
+                inputdir.y = inputdir.y;
+            }
+            break;
         // case "q":
         //     inputdir.x = -1;
         //     inputdir.y = -1;
