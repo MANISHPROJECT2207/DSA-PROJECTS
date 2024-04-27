@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Just Jump Into The Game</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+</head>
+
+<body>
+    <div class="body">
+        <div id="score">Score:0</div>
+        <div id="highscore">HighScore:0</div>
+        <div>
+            <div id="soundOn">
+                <button id="buttonForToggleSound" style="mix-blend-mode: multiply ; border: none;">
+                    <img id="changeImage" src="/volume.png" style="height: 40px; width: 40px;">
+                </button>
+                <!-- popup start -->
+                <!-- <div class="popup">
+        <button data-modal-target="#modal" class="button">Rules</button>
+        <div class="modal" id="modal">
+          <div class="modal-header">
+            <div class="title">Rules:</div>
+            <button data-close-button class="close-button">&times;</button>
+          </div>
+          <div class="modal-body">
+            1.If you eat yellow food than your direction is reversed<br/>
+            2.If you eat red food than your direction will remain same<br/>
+            3.Press Space baar to pause and resume the game <br/>
+            4.Rule one is only valid if you switch on reverse option.<br/>
+            5.Speed is controlled by range slider.<br/>
+            6.Happy Gaming!! Go and beat the High Score
+          </div>
+        </div>
+        <div id="overlay"></div>
+      </div> -->
+                <!--  popup ends -->
+                <button id="rules">
+                    Rules
+                </button>
+                <div class="alert hide">
+                    <span class="fas fa-exclamation-circle"></span>
+                    <span class="msg">Rules: <br>
+                        1.Snake head has a white color.<br/>
+                        2.If you eat blue food than your direction is reversed and your size of snake will be same and
+                        snake speed will be decrease but it comes after scoring more than 9 and if the score is divisible by 3.<br />
+                        3.If you eat red food than your direction will remain same and snake speed will be
+                        increased.<br />
+                        4.Press Space baar to pause and resume the game.<br />
+                        5.Press volumn button in left-Top to pause and resume the sound.<br />
+                    
+                        6.Happy Gaming!! Go and beat the High Score.<br />
+                    </span>
+                    <div class="close-btn">
+                        <span class="fas fa-times"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="board">
+
+        </div>
+    </div>
+</body>
+<script>
+    $('#rules').click(function () {
+        
+        $('.alert').addClass("show");
+        $('.alert').removeClass("hide");
+        $('.alert').addClass("showAlert");
+        setTimeout(function () {
+            $('.alert').removeClass("show");
+            $('.alert').addClass("hide");
+        }, 1000000);
+    });
+    $('.close-btn').click(function () {
+        $('.alert').removeClass("show");
+        $('.alert').addClass("hide");
+    });
+</script>
+<script src="/js/index.js"></script>
+<script src="/js/rules.js"></script>
+
+</html>
