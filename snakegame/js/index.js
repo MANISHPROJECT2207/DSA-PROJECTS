@@ -7,10 +7,10 @@ let speed = 3;
 let lastPaintTime = 0;
 let score = 0;
 let snakeArray = [
-    { x: 13, y: 15 }
+    { x: Math.round(2 + (14) * Math.random()), y: Math.round(13 + (3) * Math.random()) }
 ]
-let food = { x: 6, y: 7 }
-let reversefood = { x: 3, y: 9 }
+let food = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (10) * Math.random()) }
+let reversefood = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (10) * Math.random()) }
 
 let board = document.querySelector('#board')
 let scoreId = document.querySelector("#score")
@@ -22,6 +22,7 @@ let pause = false;
 
 
 let snakeLastpointer = null;  // to use reverse functionality
+let snakeHeadPointer = null;
 // game functions
 
 // functions ----------------------------
@@ -77,8 +78,9 @@ async function gameEngine() {
         inputdir = { x: 0, y: 0 };
         alert("Game Over. Press any key to Restart!!")
         snakeArray = [
-            { x: 13, y: 15 }
+            { x: Math.round(2 + (14) * Math.random()), y: Math.round(13 + (3) * Math.random()) }
         ]
+        food = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (10) * Math.random()) }
         score = 0;
         speed = 3;
         scoreId.innerHTML = "Score:" + 0
@@ -89,7 +91,23 @@ async function gameEngine() {
     if (snakeArray[0].y === food.y && snakeArray[0].x === food.x) {
         if (soundon) foodSound.play();
         snakeArray.unshift({ x: snakeArray[0].x + inputdir.x, y: snakeArray[0].y + inputdir.y });
+
         food = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (14) * Math.random()) }; // --to generate random food
+        let collideWithSnake = true;
+        let maxcheck = 0;
+        while (collideWithSnake && maxcheck <= 5) {
+            let myvalue = false;
+            snakeArray.forEach((points) => {
+                if (points.x === food.x && points.y === food.y) {
+                    food = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (14) * Math.random()) };
+                    myvalue = true;
+                }
+            })
+            if (myvalue === false) {
+                collideWithSnake = false;
+            }
+            maxcheck += 1;
+        }
         score += 1;
         scoreId.innerHTML = "Score:" + score
 
@@ -116,50 +134,71 @@ async function gameEngine() {
     // reverse snake addon
 
 
+    if (score >= 9 && score % 3 == 0) {
+        if (snakeArray[0].y === reversefood.y && snakeArray[0].x === reversefood.x) {
+            if (soundon) foodSound.play();
 
-    if (snakeArray[0].y === reversefood.y && snakeArray[0].x === reversefood.x) {
-        if (soundon) foodSound.play();
+            snakeArray.reverse();
+            if (snakeLastpointer === "U") {
+                inputdir.x = 0;
+                inputdir.y = -1;
+            }
+            else if (snakeLastpointer === "D") {
+                inputdir.x = 0;
+                inputdir.y = 1;
+            }
+            else if (snakeLastpointer === "L") {
+                inputdir.x = -1;
+                inputdir.y = 0;
+            }
+            else if (snakeLastpointer === "R") {
+                inputdir.x = 1;
+                inputdir.y = 0;
+            }
 
-        snakeArray.reverse();
-        if (snakeLastpointer === "U") {
-            inputdir.x = 0;
-            inputdir.y = -1;
+
+            // snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
+
+            reversefood = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (14) * Math.random()) }; // --to generate random food
+            // -------------------addon for not colliding with snake to food
+            let collideWithSnake = true;
+            let maxcheck = 0;
+            while (collideWithSnake && maxcheck <= 5) {
+                let myvalue = false;
+                snakeArray.forEach((points) => {
+                    if (points.x === reversefood.x && points.y === reversefood.y) {
+                        reversefood = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (14) * Math.random()) };
+                        myvalue = true;
+                        return;
+                    }
+                })
+                if (myvalue === false) {
+                    collideWithSnake = false;
+                    break;
+                }
+                maxcheck += 1;
+            }
+            //-------------------------------------------
+            score += 1;
+            scoreId.innerHTML = "Score:" + score
+
+            let highscore = localStorage.getItem('highscore');
+            if (highscore === null) {
+                let highscoreval = 0;
+                localStorage.setItem("highscore", JSON.stringify(highscoreval))
+            }
+            else {
+                let highscoreval = JSON.parse(localStorage.getItem("highscore"));
+                console.log(highscoreval);
+                highscoreval = Math.max(highscoreval, score)
+                highscoreId.innerHTML = "HighScore:" + highscoreval
+                localStorage.setItem("highscore", JSON.stringify(highscoreval))
+
+            }
+            speed -= 0.25; // to increase speed
         }
-        else if (snakeLastpointer === "D") {
-            inputdir.x = 0;
-            inputdir.y = 1;
-        }
-        else if (snakeLastpointer === "L") {
-            inputdir.x = -1;
-            inputdir.y = 0;
-        }
-        else if (snakeLastpointer === "R") {
-            inputdir.x = 1;
-            inputdir.y = 0;
-        }
-
-
-        // snakeArray.unshift({x:snakeArray[0].x + inputdir.x,y:snakeArray[0].y + inputdir.y});
-
-        reversefood = { x: Math.round(2 + (14) * Math.random()), y: Math.round(2 + (14) * Math.random()) }; // --to generate random food
-        score += 1;
-        scoreId.innerHTML = "Score:" + score
-
-        let highscore = localStorage.getItem('highscore');
-        if (highscore === null) {
-            let highscoreval = 0;
-            localStorage.setItem("highscore", JSON.stringify(highscoreval))
-        }
-        else {
-            let highscoreval = JSON.parse(localStorage.getItem("highscore"));
-            console.log(highscoreval);
-            highscoreval = Math.max(highscoreval, score)
-            highscoreId.innerHTML = "HighScore:" + highscoreval
-            localStorage.setItem("highscore", JSON.stringify(highscoreval))
-
-        }
-        speed -= 0.25; // to increase speed
     }
+
 
 
 
@@ -204,7 +243,7 @@ async function gameEngine() {
     // to get all point and make it into frame
 
 
-    // DIsplay THe snake
+    // Display THe snake
     snakeArray.forEach((points, index) => {
         snakeElementDiv = document.createElement('div');
         snakeElementDiv.style.gridRowStart = points.y;
@@ -225,12 +264,13 @@ async function gameEngine() {
     foodElementDiv.classList.add('food');
     board.appendChild(foodElementDiv);
     // add on of reverse food Display
-    reversefoodElementDiv = document.createElement('div');
-    reversefoodElementDiv.style.gridRowStart = reversefood.y;
-    reversefoodElementDiv.style.gridColumnStart = reversefood.x;
-    reversefoodElementDiv.classList.add('reversefood');
-    board.appendChild(reversefoodElementDiv);
-
+    if (score >= 9 && score % 3 == 0) {
+        reversefoodElementDiv = document.createElement('div');
+        reversefoodElementDiv.style.gridRowStart = reversefood.y;
+        reversefoodElementDiv.style.gridColumnStart = reversefood.x;
+        reversefoodElementDiv.classList.add('reversefood');
+        board.appendChild(reversefoodElementDiv);
+    }
 }
 
 
@@ -252,36 +292,52 @@ window.addEventListener('keydown', (e) => {
             if (pause === true) {
                 pause = false;
             }
+            if(snakeArray.length === 2 && snakeHeadPointer === "D"){
+                break;
+            }
             console.log("ArrowUp");
             inputdir.x = 0;
             inputdir.y = -1;
+            snakeHeadPointer = "U";
             break;
 
         case "ArrowDown":
             if (pause === true) {
                 pause = false;
             }
+            if(snakeArray.length === 2 && snakeHeadPointer === "U"){
+                break;
+            }
             console.log("ArrowDown");
             inputdir.x = 0;
             inputdir.y = 1;
+            snakeHeadPointer = "D";
             break;
 
         case "ArrowLeft":
             if (pause === true) {
                 pause = false;
             }
+            if(snakeArray.length === 2 && snakeHeadPointer === "R"){
+                break;
+            }
             console.log("ArrowLeft");
             inputdir.x = -1;
             inputdir.y = 0;
+            snakeHeadPointer = "L";
             break;
 
         case "ArrowRight":
             if (pause === true) {
                 pause = false;
             }
+            if(snakeArray.length === 2 && snakeHeadPointer === "L"){
+                break;
+            }
             console.log("ArrowRight");
             inputdir.x = 1;
             inputdir.y = 0;
+            snakeHeadPointer = "R";
             break;
 
 
@@ -311,11 +367,11 @@ window.addEventListener('keydown', (e) => {
 
 
 //add on - soundOn
-let soundOn = document.querySelector('#soundOn');
-soundOn.addEventListener('click', () => {
+let toggleSound = document.querySelector('#buttonForToggleSound');
+toggleSound.addEventListener('click', () => {
     if (soundon) {
         soundon = false;
-        
+
         changeImage.src = "/volume-mute.png";
         backgroundMusic.pause();
     }
@@ -325,6 +381,7 @@ soundOn.addEventListener('click', () => {
         soundon = true;
     }
 });
+
 
 
 

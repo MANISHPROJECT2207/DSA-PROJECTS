@@ -55,7 +55,7 @@
 
 
 .head{
-    background:linear-gradient(rgb(175, 23, 23),rgb(219, 219, 76));
+    background:rgb(252, 245, 245);
     border: 2px solid purple;
     transform: scale(1.02);
     border-radius: 9px;
@@ -66,16 +66,16 @@
     border-radius: 12px;
 }
 .food{
-    background: linear-gradient(red,purple);
+    background: red;
     border: .25vmin solid black;
-    border-radius: 8px;
+    border-radius: 15px;
 }
 /* addon */
 .reversefood{
     
         background: linear-gradient(black,blue);
         border: .25vmin solid black;
-        border-radius: 8px;
+        border-radius: 15px;
    
 }
 
@@ -88,3 +88,206 @@
     left: 10px;
     max-width: 40px;
 }
+
+
+/* popup toastify */
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+/* *{
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+html,body{
+  height: 100%;
+} */
+/* body{
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+} */
+#rules{
+  padding: 8px 16px;
+  margin-top: 20px;
+  font-size: 25px;
+  font-weight: 500;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+  background: #e69100;
+  color: white;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+.alert{
+  background: #ffdb9b;
+  padding: 20px 40px;
+  min-width: 500px;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  right: -340px;
+  top: 100px;
+  border-radius: 4px;
+  border-left: 8px solid #ffa502;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+.alert.showAlert{
+  opacity: 1;
+  pointer-events: auto;
+}
+.alert.show{
+  animation: show_slide 1s ease forwards;
+}
+@keyframes show_slide {
+    0%{
+        transform: translateX(-10px);
+      }
+      40%{
+        transform: translateX(0%);
+      }
+      80%{
+        transform: translateX(-10%);
+      }
+      100%{
+        transform: translateX(100%);
+      }
+  
+}
+.alert.hide{
+  animation: hide_slide 1s ease forwards;
+  /* display: none; */
+}
+@keyframes hide_slide {
+    0%{
+        transform: translateX(100%);
+      }
+      100%{
+        transform: translateX(-1000px);
+      }
+}
+.alert .fa-exclamation-circle{
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ce8500;
+  font-size: 30px;
+}
+.alert .msg{
+  padding: 0 20px;
+  font-size: 18px;
+  color: #ce8500;
+}
+.alert .close-btn{
+  position: absolute;
+  right: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffd080;
+  padding: 120px 12px;
+  cursor: pointer;
+}
+.alert .close-btn:hover{
+  background: #ffc766;
+}
+.alert .close-btn .fas{
+  color: #ce8500;
+  font-size: 22px;
+  line-height: 40px;
+}
+
+
+
+/* popup */
+/* .popup {
+    position:absolute;
+    top:300px;
+    left:20px;
+    
+}
+.button {
+    font-size: 39px;
+    font-weight: bold;
+    font-family: 'New Tegomin', serif;
+    border: 2px solid black;
+    border-radius: 10px;
+    cursor: pointer;
+    padding: 10px;
+    background: linear-gradient(rgb(240, 124, 124), rgb(228, 228, 129));
+}
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: white;
+    width: 500px;
+    max-width: 80%;
+    background: linear-gradient(rgb(240, 124, 124), rgb(228, 228, 129));
+  }
+  .modal-header .close-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .modal-body {
+    padding: 10px 15px;
+    font-size: 15px;
+    font-family: 'New Tegomin', serif;
+    font-weight: bold;
+    border-radius: 10px;
+    background: linear-gradient(rgb(240, 124, 124), rgb(228, 228, 129));
+  }
+  .modal.active {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  .modal-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+    border-radius: 10px;
+    background: linear-gradient(rgb(123, 177, 221), rgb(221, 241, 149));
+  }
+  
+  .modal-header .title {
+    font-size: 1.35rem;
+    font-weight: bold;
+    font-family: 'New Tegomin', serif;
+  }
+#overlay {
+    position: fixed;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    pointer-events: none;
+  }
+  
+  #overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  } */
+ 
