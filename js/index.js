@@ -373,22 +373,16 @@ window.addEventListener('keydown', (e) => {
 
 
 //add on - soundOn
-let soundOn = document.querySelector('#soundOn');
-let volup = document.querySelector('.buttonForToggle');
-let voldown = document.querySelector('.buttonForToggleSound');
-soundOn.addEventListener('click', () => {
+let toggleSound = document.querySelector('#buttonForToggleSound');
+toggleSound.addEventListener('click', () => {
     if (soundon) {
         soundon = false;
-        // changeImage.src = "images/volume-mute.png";
-        volup.classList.add('hidden');
-        voldown.classList.remove('hidden');
+        changeImage.src = "images/mute.png";
         backgroundMusic.pause();
     }
     else {
         backgroundMusic.play();
-        voldown.classList.add('hidden');
-        volup.classList.remove('hidden');
-        // changeImage.src = "images/volume.png";
+        changeImage.src = "images/volume.png";
         soundon = true;
     }
 });
