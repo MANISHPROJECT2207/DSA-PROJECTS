@@ -1,8 +1,8 @@
 let inputdir = { x: 0, y: 0 }  // in which direction it is moving
-const foodSound = new Audio('../music_food.mp3')
-const gameOverSound = new Audio('../music_gameover.mp3')
-const moveSound = new Audio('../music_move.mp3')
-const backgroundMusic = new Audio('../music.mp3')
+const foodSound = new Audio('../../snakegame/musicAndImages/music_food.mp3')
+const gameOverSound = new Audio('../../snakegame/musicAndImages/music_gameover.mp3')
+const moveSound = new Audio('../../snakegame/musicAndImage/music_move.mp3')
+const backgroundMusic = new Audio('../../snakegame/musicAndImages/music.mp3')
 let speed = 3;
 let lastPaintTime = 0;
 let score = 0;
@@ -371,12 +371,12 @@ let toggleSound = document.querySelector('#buttonForToggleSound');
 toggleSound.addEventListener('click', () => {
     if (soundon) {
         soundon = false;
-        changeImage.src = "../volume-mute.png";
+        changeImage.src = "../../snakegame/musicAndImages/volume-mute.png";
         backgroundMusic.pause();
     }
     else {
         backgroundMusic.play();
-        changeImage.src = "../volume.png";
+        changeImage.src = "../../snakegame/musicAndImages/volume.png";
         soundon = true;
     }
 });
