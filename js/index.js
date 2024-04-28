@@ -1,7 +1,7 @@
 let inputdir = { x: 0, y: 0 }  // in which direction it is moving
 const foodSound = new Audio("musicAndImages/music_food.mp3");
 const gameOverSound = new Audio("musicAndImages/music_gameover.mp3");
-const moveSound = new Audio("musicAndImage/music_move.mp3");
+const moveSound = new Audio("musicAndImages/music_move.mp3");
 const backgroundMusic = new Audio("music.mp3");
 
 let speed = 3;
@@ -45,9 +45,7 @@ else {
 
 
 function main(ctime) {
-    if (soundon) {
-        backgroundMusic.play();
-    }
+    
     window.requestAnimationFrame(main); //---- to design the gameloop
     if ((ctime - lastPaintTime) / 1000 < 1 / speed) {
         return;
@@ -284,9 +282,15 @@ async function gameEngine() {
 window.requestAnimationFrame(main); // to eliminate the flickration in setinterval , high quality animation
 
 window.addEventListener('keydown', (e) => {
+    if (soundon) {
+        backgroundMusic.play();
+    }
 
+    if (soundon){
+        moveSound.play();
+        console.log("come");
+    } 
 
-    if (soundon) moveSound.play();
 
     switch (e.key) {
         case "ArrowUp":
@@ -296,6 +300,7 @@ window.addEventListener('keydown', (e) => {
             if(snakeArray.length === 2 && snakeHeadPointer === "D"){
                 break;
             }
+            // moveSound.play();
             console.log("ArrowUp");
             inputdir.x = 0;
             inputdir.y = -1;
@@ -372,12 +377,12 @@ let toggleSound = document.querySelector('#buttonForToggleSound');
 toggleSound.addEventListener('click', () => {
     if (soundon) {
         soundon = false;
-        changeImage.src = "/musicAndImages/volume-mute.png";
+        changeImage.src = "musicAndImages/volume-mute.png";
         backgroundMusic.pause();
     }
     else {
         backgroundMusic.play();
-        changeImage.src = "/musicAndImages/volume.png";
+        changeImage.src = "musicAndImages/volume.png";
         soundon = true;
     }
 });
