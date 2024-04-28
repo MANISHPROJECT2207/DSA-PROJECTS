@@ -372,12 +372,12 @@ let toggleSound = document.querySelector('#buttonForToggleSound');
 toggleSound.addEventListener('click', () => {
     if (soundon) {
         soundon = false;
-        changeImage.src = "../../snakegame/musicAndImages/volume-mute.png";
+        changeImage.src = "/musicAndImages/volume-mute.png";
         backgroundMusic.pause();
     }
     else {
         backgroundMusic.play();
-        changeImage.src = "../../snakegame/musicAndImages/volume.png";
+        changeImage.src = "/musicAndImages/volume.png";
         soundon = true;
     }
 });
