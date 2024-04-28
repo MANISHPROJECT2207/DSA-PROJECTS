@@ -1,8 +1,8 @@
 let inputdir = { x: 0, y: 0 }  // in which direction it is moving
-const foodSound = new Audio('../../snakegame/musicAndImages/music_food.mp3')
-const gameOverSound = new Audio('../../snakegame/musicAndImages/music_gameover.mp3')
-const moveSound = new Audio('../../snakegame/musicAndImage/music_move.mp3')
-const backgroundMusic = new Audio('music.mp3')
+const foodSound = new Audio("musicAndImages/music_food.mp3");
+const gameOverSound = new Audio("musicAndImages/music_gameover.mp3");
+const moveSound = new Audio("musicAndImage/music_move.mp3");
+const backgroundMusic = new Audio("music.mp3");
 
 let speed = 3;
 let lastPaintTime = 0;
