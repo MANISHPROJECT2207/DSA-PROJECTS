@@ -297,7 +297,7 @@ window.addEventListener('keydown', (e) => {
             if (pause === true) {
                 pause = false;
             }
-            if(snakeArray.length === 2 && snakeHeadPointer === "D"){
+            if(snakeArray.length >= 2 && snakeHeadPointer === "D"){
                 break;
             }
             // moveSound.play();
@@ -311,7 +311,7 @@ window.addEventListener('keydown', (e) => {
             if (pause === true) {
                 pause = false;
             }
-            if(snakeArray.length === 2 && snakeHeadPointer === "U"){
+            if(snakeArray.length >= 2 && snakeHeadPointer === "U"){
                 break;
             }
             console.log("ArrowDown");
@@ -324,7 +324,7 @@ window.addEventListener('keydown', (e) => {
             if (pause === true) {
                 pause = false;
             }
-            if(snakeArray.length === 2 && snakeHeadPointer === "R"){
+            if(snakeArray.length >= 2 && snakeHeadPointer === "R"){
                 break;
             }
             console.log("ArrowLeft");
@@ -337,7 +337,7 @@ window.addEventListener('keydown', (e) => {
             if (pause === true) {
                 pause = false;
             }
-            if(snakeArray.length === 2 && snakeHeadPointer === "L"){
+            if(snakeArray.length >= 2 && snakeHeadPointer === "L"){
                 break;
             }
             console.log("ArrowRight");
